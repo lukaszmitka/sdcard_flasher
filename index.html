@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SD card flasher</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+</head>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/progress.js"></script>
+<script src="js/jquery-3.4.1.min.js"></script>
+<script src="js/bootstrap.bundle.min.js"></script>
+
+<body class="bg-light">
+    <div class="m-5">
+        <table class="table table-info table-bordered">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Device</th>
+                    <th scope="col">Progress</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>/dev/sdb</td>
+                    <td>
+                        <div class="d-inline-flex" id="/dev/sdb">0</div>%
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>/dev/sdc</td>
+                    <td>
+                        <div class="d-inline-flex" id="/dev/sdc">0</div>%
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</body>
+
+</html>

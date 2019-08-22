@@ -2,6 +2,7 @@ from multiprocessing import Process, Queue
 import os
 import time
 from pathlib import Path
+import socketio
 
 def flash_image(filename, device, buf_size, queue):
     counter = 0
@@ -25,8 +26,6 @@ def flash_image(filename, device, buf_size, queue):
             card.flush()
             os.fsync(card.fileno())
             print_counter = 0
-            print("Bytes written", counter * buf_size, " of ", image_size)
-
             progress_percent = 100
             status = "DONE"
     return True
@@ -50,17 +49,19 @@ image_file = "/home/husarion/Downloads/debian-10.0.0-amd64-netinst.iso"
 
 
 if __name__ == '__main__':
+    sio = socketio.Client()
+    sio.connect('http://localhost:3000')
     q = Queue()
     p1 = Process(target=flash_process, args=(q, dev_name[0], buffer_size, image_file,))
     p2 = Process(target=flash_process, args=(q, dev_name[1], buffer_size, image_file,))
     p1.start()
     p2.start()
     while p1.is_alive() and p2.is_alive():
-        print("Processes are running")
-        progress = q.get()
-        print("Device ", progress[0], ", done: ", progress[1], "%")
-        # time.sleep(1)
+        # print("Processes are running")
+        if q.qsize() > 0:
+            progress = q.get()
+            sio.emit('flash-update', {'device': progress[0], 'progress': progress[1]})
+        else: 
+            time.sleep(0.1)
     p1.join()
     p2.join()
-
-conn.close()
