@@ -1,0 +1,5 @@
+.vscode
+db.sqlite
+image_burner.db
+image_burner.sqlite
+node_modules
